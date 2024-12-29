@@ -11,7 +11,7 @@ function Hero() {
           Up To <br /> 50% Off
         </h1>
         <p className="mb-6 text-lg text-gray-300">
-          Don't miss out on our biggest sale of the year!
+          Don&apos;t miss out on our biggest sale of the year!
         </p>
         <Link
           href="/"
