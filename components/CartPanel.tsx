@@ -52,7 +52,7 @@ const CartPanel: React.FC = () => {
                       className=" bg-transparent object-cover mr-4 rounded"
                     />
                     <div>
-                      <span className="block text-white font-medium">{item.title.length > 20 ? `${item.title.substring(0, 20)}...` : item.title}</span>
+                      <span className="block text-white font-medium">{item.title.length > 15 ? `${item.title.substring(0, 15)}...` : item.title}</span>
                     </div>
                   </div>
 
