@@ -42,44 +42,62 @@ const CartPanel: React.FC = () => {
           <>
             <ul className="divide-y divide-gray-600">
               {cart.map((item) => (
-                <li key={item.id} className="flex justify-between items-center py-4">
+                <li
+                  key={item.id}
+                  className="flex flex-col md:flex-row justify-between py-4 space-y-4 md:space-y-0"
+                >
+                  {/* Image and Title */}
                   <div className="flex items-center">
                     <Image
                       src={item.image}
                       alt={item.title}
                       width={48}
                       height={48}
-                      className=" bg-transparent object-cover mr-4 rounded"
+                      className="bg-transparent object-cover mr-4 rounded"
                     />
                     <div>
-                      <span className="block text-white font-medium">{item.title.length > 15 ? `${item.title.substring(0, 15)}...` : item.title}</span>
+                      <span className="block text-white font-medium text-sm md:text-base">
+                        {item.title.length > 15
+                          ? `${item.title.substring(0, 15)}...`
+                          : item.title}
+                      </span>
                     </div>
                   </div>
 
-                  <div className="flex items-center space-x-2">
+                  {/* Quantity Increaser, Price, and Delete Button */}
+                  <div className="flex items-center justify-end gap-2 space-x-4 w-full md:w-auto">
+                    {/* Quantity Controls */}
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => decreaseQuantity(item.id)}
+                        className="p-2 rounded text-white"
+                      >
+                        <Minus size={16} />
+                      </button>
+                      <span className="text-white text-sm md:text-base">
+                        {item.quantity}
+                      </span>
+                      <button
+                        onClick={() => increaseQuantity(item.id)}
+                        className="p-2 rounded text-white"
+                      >
+                        <Plus size={16} />
+                      </button>
+                    </div>
+
+                    {/* Price */}
+                    <span className="text-white text-sm md:text-base">
+                      ${(item.price * item.quantity).toFixed(2)}
+                    </span>
+
+                    {/* Delete Button */}
                     <button
-                      onClick={() => decreaseQuantity(item.id)}
-                      className=" p-2 rounded text-white"
+                      onClick={() => removeFromCart(item.id)}
+                      className="text-red-500 hover:text-red-700"
                     >
-                      <Minus size={16} />
-                    </button>
-                    <span className="text-white">{item.quantity}</span>
-                    <button
-                      onClick={() => increaseQuantity(item.id)}
-                      className=" p-2 rounded text-white"
-                    >
-                      <Plus size={16} />
+                      <Trash size={18} />
                     </button>
                   </div>
-
-                  <span className="text-white ml-4">${(item.price * item.quantity).toFixed(2)}</span>
-
-                  <button
-                    onClick={() => removeFromCart(item.id)}
-                    className="text-red-500 hover:text-red-700 ml-4"
-                  >
-                    <Trash size={18} />
-                  </button>
                 </li>
               ))}
             </ul>
