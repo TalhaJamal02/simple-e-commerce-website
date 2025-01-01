@@ -33,8 +33,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
             ? { ...cartItem, quantity: cartItem.quantity + 1 }
             : cartItem
         );
+      } else {
+        return [...prevCart, { ...item, quantity: 1 }];
       }
-      return [...prevCart, { ...item, quantity: 1 }];
     });
   };
 
