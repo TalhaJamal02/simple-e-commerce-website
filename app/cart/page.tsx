@@ -19,7 +19,7 @@ export default function CartPage() {
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <Table className="w-full bg-white shadow-md rounded-lg overflow-hidden">
+          <Table className="w-full bg-white shadow-lg rounded-lg overflow-hidden">
             <TableHeader className="bg-gray-200">
               <TableRow>
                 <TableHead className="w-2/5 p-4 text-left">Product</TableHead>
