@@ -12,6 +12,8 @@ const CartPanel: React.FC = () => {
 
   const { cart, removeFromCart, increaseQuantity, decreaseQuantity, clearCart } = useCart();
 
+  const totalQuantity = cart.reduce((acc, item) => acc + item.quantity, 0);
+
   const totalPrice = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   return (
@@ -20,7 +22,14 @@ const CartPanel: React.FC = () => {
         {isCartOpen ? (
           ""
         ) : (
-          <ShoppingCart size={24} className="inline cursor-pointer" />
+          <span>
+            <ShoppingCart size={24} className="inline cursor-pointer" />
+            {totalQuantity > 0 && (
+              <span className="absolute -top-1 -right-2 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                {totalQuantity}
+              </span>
+            )}
+          </span>
         )}
       </button>
 
