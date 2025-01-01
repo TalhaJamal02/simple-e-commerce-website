@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Star } from 'lucide-react';
-import { BarLoader } from 'react-spinners';
 import Link from 'next/link';
 import { Skeleton } from './ui/skeleton';
 

@@ -66,8 +66,8 @@ const CartPanel: React.FC = () => {
                     />
                     <div>
                       <span className="block text-white font-medium text-sm md:text-base">
-                        {item.title.length > 15
-                          ? `${item.title.substring(0, 15)}...`
+                        {item.title.length > 40
+                          ? `${item.title.substring(0, 40)}...`
                           : item.title}
                       </span>
                     </div>
