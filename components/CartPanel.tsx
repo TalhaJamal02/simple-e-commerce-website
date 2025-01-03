@@ -118,7 +118,7 @@ const CartPanel: React.FC = () => {
               >
                 Clear Cart
               </button>
-              <Link href={"/cart"} className="mt-4 px-5 py-2 bg-gradient-to-br from-gray-600 to-black via-gray-700 text-white rounded ">
+              <Link href={"/cart"} className="mt-4 px-5 py-2 bg-gradient-to-br from-gray-600 to-black via-gray-700 text-white rounded">
                 Proceed To Checkout
               </Link>
             </div>
