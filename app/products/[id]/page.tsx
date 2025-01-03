@@ -86,7 +86,7 @@ const ProductDetailPage: React.FC = () => {
             {product.rating.rate}
           </p>
 
-          <p className="flex text-gray-700 items-center gap-2 justify-center sm:justify-normal mb-2">
+          <p className="flex text-gray-700 font-medium items-center gap-2 justify-center sm:justify-normal mb-2">
             Size: <ToggleGroup type="single" defaultValue="m">
               <ToggleGroupItem value="s" className=" border border-gray-300">S</ToggleGroupItem>
               <ToggleGroupItem value="m" className=" border border-gray-300">M</ToggleGroupItem>
