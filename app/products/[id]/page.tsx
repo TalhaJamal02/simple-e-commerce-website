@@ -8,6 +8,7 @@ import { Star } from "lucide-react";
 import FeaturedSection from "@/components/FeaturedSection";
 import { useCart } from "@/lib/CartContext";
 import { toast } from "sonner";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 
 interface Product {
@@ -83,6 +84,14 @@ const ProductDetailPage: React.FC = () => {
             <span className="font-medium text-gray-700">Rating: </span>
             <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
             {product.rating.rate}
+          </p>
+
+          <p className="flex text-gray-700 items-center gap-2 justify-center sm:justify-normal mb-2">
+            Size: <ToggleGroup type="single" defaultValue="m">
+              <ToggleGroupItem value="s" className=" border border-gray-300">S</ToggleGroupItem>
+              <ToggleGroupItem value="m" className=" border border-gray-300">M</ToggleGroupItem>
+              <ToggleGroupItem value="l" className=" border border-gray-300">L</ToggleGroupItem>
+            </ToggleGroup>
           </p>
 
           <p className="text-base text-gray-600 mb-6">
