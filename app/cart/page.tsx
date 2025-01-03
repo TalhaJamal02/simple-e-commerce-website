@@ -14,12 +14,12 @@ export default function CartPage() {
   const total = subtotal + shippingCost;
 
   return (
-    <div className="h-full mx-auto my-20 px-4 md:px-8 lg:px-16 bg-gray-50">
+    <div className="h-full mx-auto my-20 py-6 px-4 md:px-8 lg:px-16 bg-gray-50">
       <h1 className="text-3xl font-bold mb-10 text-center text-gray-800">Shopping Cart</h1>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <Table className="w-full bg-white shadow-md rounded-lg overflow-hidden">
+          <Table className="w-full bg-white shadow-lg rounded-lg overflow-hidden">
             <TableHeader className="bg-gray-200">
               <TableRow>
                 <TableHead className="w-2/5 p-4 text-left">Product</TableHead>
@@ -70,7 +70,7 @@ export default function CartPage() {
           </Table>
         </div>
 
-        <div className="bg-gray-100 p-6 rounded-lg shadow-lg">
+        <div className="bg-gray-100 p-6 rounded-lg shadow-lg h-auto">
           <h2 className="text-2xl font-semibold mb-4 text-gray-800">Cart Totals</h2>
           <div className="flex justify-between mb-4 text-gray-700">
             <span>Subtotal:</span>
