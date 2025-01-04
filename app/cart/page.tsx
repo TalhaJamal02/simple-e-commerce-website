@@ -3,6 +3,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link"
 import { useCart } from "@/lib/CartContext";
 
 export default function CartPage() {
@@ -81,13 +82,15 @@ export default function CartPage() {
             <span>Free</span>
           </div>
           <hr className="mb-4" />
-          <div className="flex justify-between font-semibold text-lg text-gray-800">
+          <div className="flex justify-between text-lg text-gray-800">
             <span>Total:</span>
             <span>${total.toFixed(2)}</span>
           </div>
-          <Button className="w-full mt-6 bg-gradient-to-br from-gray-500 via-black to-gray-500">
+          <Link href={"/checkout"}>
+          <Button className="w-full font-semibold  mt-6 bg-gradient-to-br from-gray-500 via-black to-gray-500">
             Proceed to Checkout
           </Button>
+          </Link>
         </div>
       </div>
     </div>
