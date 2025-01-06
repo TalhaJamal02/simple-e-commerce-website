@@ -13,6 +13,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogDescription,
+  AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 
 const Checkout = () => {
@@ -129,7 +130,7 @@ const Checkout = () => {
             <Button
               type="submit"
               onClick={handleConfirmOrder}
-              className="w-full py-2 px-4 bg-blue-600 text-white font-medium rounded-md shadow-sm bg-gradient-to-r from-gray-500 via-black to-gray-500"
+              className="w-full py-2 px-4 text-white font-medium rounded-md shadow-sm bg-gradient-to-r from-gray-500 via-black to-gray-500"
             >
               Place Order
             </Button>
