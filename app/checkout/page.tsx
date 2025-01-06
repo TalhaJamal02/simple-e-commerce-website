@@ -83,7 +83,7 @@ const Checkout = () => {
             className="space-y-4 w-full px-4 sm:px-8 lg:px-0"
           >
             <Tabs defaultValue="cash" className="w-full">
-              <TabsList className=" flex justify-center min-w-full mx-auto">
+              <TabsList className=" flex justify-center min-w-full p-2">
                 <TabsTrigger value="cash">Cash on Delivery</TabsTrigger>
                 <TabsTrigger value="card">Card Payment</TabsTrigger>
               </TabsList>
