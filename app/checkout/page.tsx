@@ -387,10 +387,10 @@ const Checkout = () => {
               ))}
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t py-4 mt-4 text-gray-700">
-              <div className="flex flex-col space-y-2 w-full">
-                <span>Coupon Code:</span>
-                <div className="grid grid-cols-1 sm:grid-cols-[2fr_auto] gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t py-4 mt-4 text-gray-700 w-full">
+              <div className="flex flex-col space-y-4 sm:col-span-2">
+                <span className="text-lg font-medium">Coupon Code:</span>
+                <div className="w-full flex gap-4">
                   <Input
                     type="text"
                     value={couponCode}
@@ -398,21 +398,17 @@ const Checkout = () => {
                     placeholder="Enter DISCOUNT20"
                     className="p-2 w-full border-gray-300 rounded-md bg-white"
                   />
-                  <Button
-                    onClick={applyCoupon}
-                    className="bg-black text-white w-full"
-                  >
+                  <Button onClick={applyCoupon} className="bg-black text-white">
                     Apply
                   </Button>
                 </div>
+                {discount > 0 && (
+                  <div className="flex justify-between items-center mt-2">
+                    <span>Discount:</span>
+                    <span>-${discount.toFixed(2)}</span>
+                  </div>
+                )}
               </div>
-
-              {discount > 0 && (
-                <div className="flex justify-between items-center sm:pt-8">
-                  <span>Discount:</span>
-                  <span>-${discount.toFixed(2)}</span>
-                </div>
-              )}
 
               <div className="flex justify-between items-center sm:col-span-2 border-t pt-4">
                 <h3 className="text-lg font-medium">Total:</h3>
@@ -421,7 +417,6 @@ const Checkout = () => {
                 </p>
               </div>
             </div>
-
           </div>
         </div>
       </div>
