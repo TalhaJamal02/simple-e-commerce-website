@@ -16,6 +16,7 @@ import {
   AlertDialogDescription,
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 
 const Checkout = () => {
   const [formData, setFormData] = useState({
@@ -32,6 +33,8 @@ const Checkout = () => {
   });
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [couponCode, setCouponCode] = useState("");
+  const [discount, setDiscount] = useState(0);
 
   const handleChange = (e: { target: { name: string; value: string } }) => {
     setFormData((prev) => ({
@@ -56,7 +59,19 @@ const Checkout = () => {
 
   const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
-  const totalPrice = total + shippingCost + tax;
+  const discountedSubtotal = total - discount;
+
+  const totalPrice = discountedSubtotal + shippingCost + tax;
+
+  const applyCoupon = () => {
+    if (couponCode === "DISCOUNT20") {
+      const discountAmount = total * 0.2;
+      setDiscount(discountAmount);
+    } else {
+      setDiscount(0);
+      toast.error("Invalid coupon code!");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 py-10">
@@ -68,9 +83,9 @@ const Checkout = () => {
             className="space-y-4 w-full px-4 sm:px-8 lg:px-0"
           >
             <Tabs defaultValue="cash" className="w-full">
-              <TabsList className=" flex justify-center">
+              <TabsList className=" flex justify-center min-w-full mx-auto">
                 <TabsTrigger value="cash">Cash on Delivery</TabsTrigger>
-                <TabsTrigger value="card">Credit/Debit Card</TabsTrigger>
+                <TabsTrigger value="card">Card Payment</TabsTrigger>
               </TabsList>
               <TabsContent value="cash">
                 <h2 className="text-xl font-semibold my-4 text-center">
@@ -371,10 +386,42 @@ const Checkout = () => {
                 </div>
               ))}
             </div>
-            <div className="flex justify-between items-center border-t pt-4 mt-4">
-              <h3 className="text-lg font-medium">Total:</h3>
-              <p className="text-lg font-semibold">${totalPrice.toFixed(2)}</p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t py-4 mt-4 text-gray-700">
+              <div className="flex flex-col space-y-2 w-full">
+                <span>Coupon Code:</span>
+                <div className="grid grid-cols-1 sm:grid-cols-[2fr_auto] gap-2">
+                  <Input
+                    type="text"
+                    value={couponCode}
+                    onChange={(e) => setCouponCode(e.target.value)}
+                    placeholder="Enter DISCOUNT20"
+                    className="p-2 w-full border-gray-300 rounded-md bg-white"
+                  />
+                  <Button
+                    onClick={applyCoupon}
+                    className="bg-black text-white w-full"
+                  >
+                    Apply
+                  </Button>
+                </div>
+              </div>
+
+              {discount > 0 && (
+                <div className="flex justify-between items-center sm:pt-8">
+                  <span>Discount:</span>
+                  <span>-${discount.toFixed(2)}</span>
+                </div>
+              )}
+
+              <div className="flex justify-between items-center sm:col-span-2 border-t pt-4">
+                <h3 className="text-lg font-medium">Total:</h3>
+                <p className="text-lg font-semibold">
+                  ${totalPrice.toFixed(2)}
+                </p>
+              </div>
             </div>
+
           </div>
         </div>
       </div>

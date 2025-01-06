@@ -50,7 +50,7 @@ const ProductDetailPage: React.FC = () => {
 
   const handleAddToCart = () => {
     addToCart(product);
-    toast(`Item Added To Cart!`);
+    toast.success(`Item Added To Cart!`);
   };
 
   return (
@@ -87,7 +87,7 @@ const ProductDetailPage: React.FC = () => {
           </p>
 
           <p className="flex text-gray-700 font-medium items-center gap-2 justify-center sm:justify-normal mb-2">
-            Size: <ToggleGroup type="single" defaultValue="m">
+            Size: <ToggleGroup type="single">
               <ToggleGroupItem value="s" className=" border border-gray-300">S</ToggleGroupItem>
               <ToggleGroupItem value="m" className=" border border-gray-300">M</ToggleGroupItem>
               <ToggleGroupItem value="l" className=" border border-gray-300">L</ToggleGroupItem>
