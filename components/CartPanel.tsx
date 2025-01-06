@@ -114,11 +114,11 @@ const CartPanel: React.FC = () => {
             <div className="flex justify-between items-center space-x-3">
               <button
                 onClick={clearCart}
-                className="mt-4 px-2 py-2 text-xs font-semibold  sm:text-base sm:px-5  bg-red-700 text-white rounded w-fit"
+                className="mt-4 px-2 py-2 text-xs font-medium  sm:text-base sm:px-5  bg-red-700 text-white rounded w-fit"
               >
                 Clear Cart
               </button>
-              <Link href={"/cart"} className="mt-4 text-xs sm:text-base px-2 py-2 sm:px-5  bg-gradient-to-br from-gray-600 to-black via-gray-700 text-white rounded w-fit">
+              <Link href={"/cart"} className="mt-4 text-xs font-medium sm:text-base px-2 py-2 sm:px-5  bg-gradient-to-br from-gray-600 to-black via-gray-700 text-white rounded w-fit">
                 Proceed To Checkout
               </Link>
             </div>

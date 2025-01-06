@@ -12,17 +12,37 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/lib/CartContext";
+import { useState } from "react";
+import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
 
 export default function CartPage() {
+  const [couponCode, setCouponCode] = useState("");
+  const [discount, setDiscount] = useState(0);
+
   const { cart, increaseQuantity, decreaseQuantity } = useCart();
 
-  const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const subtotal = cart.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
 
   const shippingCost = 10;
+  const tax = 2.99;
 
-  const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const discountedSubtotal = subtotal - discount;
 
-  const totalPrice = total + shippingCost;
+  const totalPrice = discountedSubtotal + shippingCost + tax;
+
+  const applyCoupon = () => {
+    if (couponCode === "DISCOUNT20") {
+      const discountAmount = subtotal * 0.2;
+      setDiscount(discountAmount);
+    } else {
+      setDiscount(0);
+      toast("Invalid coupon code!");
+    }
+  };
 
   return (
     <div className="h-full mx-auto my-20 py-6 px-4 md:px-8 lg:px-16 bg-gray-50">
@@ -63,7 +83,7 @@ export default function CartPage() {
                     <div className="flex items-center gap-2">
                       <Button
                         variant="outline"
-                        className="p-2"
+                        className="p-2 border-none"
                         onClick={() => decreaseQuantity(item.id)}
                       >
                         -
@@ -71,7 +91,7 @@ export default function CartPage() {
                       <span className="text-gray-700">{item.quantity}</span>
                       <Button
                         variant="outline"
-                        className="p-2"
+                        className="p-2 border-none"
                         onClick={() => increaseQuantity(item.id)}
                       >
                         +
@@ -88,24 +108,62 @@ export default function CartPage() {
         </div>
 
         <div className="bg-gray-100 p-6 rounded-lg shadow-lg h-auto">
-          <h2 className="text-2xl font-semibold mb-4 text-gray-800">
+          <h2 className="text-2xl font-semibold mb-6 text-gray-800">
             Cart Totals
           </h2>
-          <div className="flex justify-between mb-4 text-gray-700">
+
+          <div className="flex justify-between mb-3 text-gray-700">
             <span>Subtotal:</span>
             <span>${subtotal.toFixed(2)}</span>
           </div>
-          <div className="flex justify-between mb-4 text-gray-700">
+
+          <div className="flex justify-between mb-3 text-gray-700">
+            <span>Tax:</span>
+            <span>${tax}</span>
+          </div>
+
+          <div className="flex justify-between mb-3 text-gray-700">
             <span>Shipping:</span>
             <span>${shippingCost}</span>
           </div>
-          <hr className="mb-4" />
+
+          <hr className="my-4" />
+
+          <div className="flex flex-col justify-between items-start space-y-3 mb-4 text-gray-700">
+            <span>Coupon Code:</span>
+            <div className="flex space-x-2 w-full max-w-xs">
+              <Input
+                type="text"
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value)}
+                placeholder="Enter DISCOUNT20"
+                className="p-2 w-full border-gray-300 rounded-md bg-white"
+              />
+              <Button
+                onClick={applyCoupon}
+                className="bg-black text-white"
+              >
+                Apply
+              </Button>
+            </div>
+          </div>
+
+          {discount > 0 && (
+            <div className="flex justify-between mb-3 text-gray-700">
+              <span>Discount:</span>
+              <span>-${discount.toFixed(2)}</span>
+            </div>
+          )}
+
+          <hr className="my-4" />
+
           <div className="flex justify-between text-lg text-gray-800">
             <span>Total:</span>
             <span>${totalPrice.toFixed(2)}</span>
           </div>
-          <Link href={"/checkout"}>
-            <Button className="w-full font-semibold  mt-6 bg-gradient-to-br from-gray-500 via-black to-gray-500">
+
+          <Link href="/checkout">
+            <Button className="w-full font-semibold mt-6 bg-gradient-to-br from-gray-500 via-black to-gray-500">
               Proceed to Checkout
             </Button>
           </Link>
