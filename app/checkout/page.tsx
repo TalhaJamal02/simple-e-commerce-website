@@ -8,13 +8,11 @@ import Link from "next/link";
 import {
   AlertDialog,
   AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogDescription,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
 const Checkout = () => {

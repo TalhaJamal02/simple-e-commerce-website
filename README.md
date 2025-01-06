@@ -2,9 +2,10 @@
 ShopEasy is a simple e-commerce website. This project demonstrates the implementation of API integration, a product detail page, and a shopping cart, providing a minimal yet functional e-commerce platform.
 
 ## Features
-- **Browse Products:** Fetches product data dynamically from [FakestoreAPI](https://fakestoreapi.com/products).
-- **Product Details:** View detailed information about each product.
-- **Shopping Cart:** Add items to your cart and view your selections.
+- **Browse Products**: Dynamically fetch product data from the FakestoreAPI to showcase a wide range of items.
+- **Product Details**: Explore comprehensive details of each product, including pricing, descriptions, and images.
+- **Shopping Cart**: Add your favorite items to the cart, review your selections, and proceed to checkout seamlessly.
+- **Checkout Page**: Fill out billing details and view an order summary with the total price. Complete your purchase with a simple, user-friendly interface.
 
 ## Tech Stack
 - **Next.js**: For server-side rendering and routing.
