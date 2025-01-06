@@ -43,7 +43,11 @@ const Checkout = () => {
 
   const { cart } = useCart();
 
+  const shippingCost = 10;
+
   const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+  const totalPrice = total + shippingCost;
 
   return (
     <div className="min-h-screen bg-gray-100 py-10">
@@ -153,7 +157,7 @@ const Checkout = () => {
             </div>
             <div className="flex justify-between items-center border-t pt-4 mt-4">
               <h3 className="text-lg font-medium">Total:</h3>
-              <p className="text-lg font-semibold">${total.toFixed(2)}</p>
+              <p className="text-lg font-semibold">${totalPrice.toFixed(2)}</p>
             </div>
           </div>
         </div>
@@ -169,8 +173,13 @@ const Checkout = () => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <Link href={"/"}>
-            <AlertDialogAction>
+            <AlertDialogCancel>
               Continue Shopping
+            </AlertDialogCancel>
+            </Link>
+            <Link href={"/"}>
+            <AlertDialogAction>
+              Track Your Order 
             </AlertDialogAction>
             </Link>
           </AlertDialogFooter>
