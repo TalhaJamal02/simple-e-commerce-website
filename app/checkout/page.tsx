@@ -84,8 +84,8 @@ const Checkout = () => {
           >
             <Tabs defaultValue="cash" className="w-full">
               <TabsList className=" flex justify-center min-w-full">
-                <TabsTrigger value="cash" className="p-4">Cash on Delivery</TabsTrigger>
-                <TabsTrigger value="card" className="p-4">Card Payment</TabsTrigger>
+                <TabsTrigger value="cash">Cash on Delivery</TabsTrigger>
+                <TabsTrigger value="card">Card Payment</TabsTrigger>
               </TabsList>
               <TabsContent value="cash">
                 <h2 className="text-xl font-semibold my-4 text-center">
