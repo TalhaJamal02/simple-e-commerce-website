@@ -10,9 +10,20 @@ type CartItem = {
   image: string;
 };
 
+type WishlistItem = {
+  id: number;
+  title: string;
+  price: number;
+  image: string;
+};
+
 type CartContextType = {
   cart: CartItem[];
+  wishlist: WishlistItem[];
   addToCart: (item: CartItem) => void;
+  addToWishlist: (item: WishlistItem) => void;
+  removeFromWishlist: (id: number) => void;
+  moveWishlistToCart: (id: number) => void;
   increaseQuantity: (id: number) => void;
   decreaseQuantity: (id: number) => void;
   removeFromCart: (id: number) => void;
@@ -21,21 +32,33 @@ type CartContextType = {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
 
+  // Load cart and wishlist from localStorage on component mount
   useEffect(() => {
-    const storedCart = localStorage.getItem("cart");
-    if (storedCart) {
-      setCart(JSON.parse(storedCart));
+    try {
+      const storedCart = localStorage.getItem("cart");
+      const storedWishlist = localStorage.getItem("wishlist");
+      if (storedCart) setCart(JSON.parse(storedCart));
+      if (storedWishlist) setWishlist(JSON.parse(storedWishlist));
+    } catch (error) {
+      console.error("Failed to parse localStorage data:", error);
     }
   }, []);
 
+  // Save cart to localStorage whenever it changes
   useEffect(() => {
-    if (cart.length > 0) {
-      localStorage.setItem("cart", JSON.stringify(cart));
-    }
+    localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
+
+  // Save wishlist to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  }, [wishlist]);
 
   const addToCart = (item: CartItem) => {
     setCart((prevCart) => {
@@ -46,10 +69,38 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
             ? { ...cartItem, quantity: cartItem.quantity + 1 }
             : cartItem
         );
-      } else {
-        return [...prevCart, { ...item, quantity: 1 }];
       }
+      return [...prevCart, { ...item, quantity: 1 }];
     });
+  };
+
+  const addToWishlist = (item: WishlistItem) => {
+    setWishlist((prevWishlist) => {
+      if (prevWishlist.some((wishlistItem) => wishlistItem.id === item.id)) {
+        return prevWishlist;
+      }
+      return [...prevWishlist, item];
+    });
+  };
+
+  const removeFromWishlist = (id: number) => {
+    setWishlist((prevWishlist) =>
+      prevWishlist.filter((wishlistItem) => wishlistItem.id !== id)
+    );
+  };
+
+  const moveWishlistToCart = (id: number) => {
+    const item = wishlist.find((wishlistItem) => wishlistItem.id === id);
+    if (item) {
+      addToCart({
+        id: item.id,
+        title: item.title,
+        price: item.price,
+        image: item.image,
+        quantity: 1,
+      });
+      removeFromWishlist(id);
+    }
   };
 
   const increaseQuantity = (id: number) => {
@@ -78,13 +129,27 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const clearCart = () => {
     setCart([]);
-    localStorage.removeItem("cart");
+    localStorage.setItem("cart", JSON.stringify([]));
   };
 
+  const contextValue = React.useMemo(
+    () => ({
+      cart,
+      wishlist,
+      addToCart,
+      addToWishlist,
+      removeFromWishlist,
+      moveWishlistToCart,
+      increaseQuantity,
+      decreaseQuantity,
+      removeFromCart,
+      clearCart,
+    }),
+    [cart, wishlist]
+  );
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, increaseQuantity, decreaseQuantity, removeFromCart, clearCart }}>
-      {children}
-    </CartContext.Provider>
+    <CartContext.Provider value={contextValue}>{children}</CartContext.Provider>
   );
 };
 

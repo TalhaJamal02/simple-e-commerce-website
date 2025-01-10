@@ -11,11 +11,20 @@ const CartPanel: React.FC = () => {
 
   const toggleCart = () => setIsCartOpen(!isCartOpen);
 
-  const { cart, removeFromCart, increaseQuantity, decreaseQuantity, clearCart } = useCart();
+  const {
+    cart,
+    removeFromCart,
+    increaseQuantity,
+    decreaseQuantity,
+    clearCart,
+  } = useCart();
 
   const totalQuantity = cart.reduce((acc, item) => acc + item.quantity, 0);
 
-  const totalPrice = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const totalPrice = cart.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
 
   return (
     <div className="relative">
@@ -25,18 +34,17 @@ const CartPanel: React.FC = () => {
         ) : (
           <span>
             <ShoppingCart size={28} className="inline cursor-pointer" />
-            {totalQuantity > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                {totalQuantity}
-              </span>
-            )}
+            <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              {totalQuantity}
+            </span>
           </span>
         )}
       </button>
 
       <div
-        className={`z-50 overflow-x-hidden fixed top-0 right-0 w-full sm:w-[450px] max-w-[90vw] h-full bg-zinc-950 shadow-lg p-6 transition-transform duration-500 transform ${isCartOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+        className={`z-50 overflow-x-hidden fixed top-0 right-0 w-full sm:w-[450px] max-w-[90vw] h-full bg-zinc-950 shadow-lg p-6 transition-transform duration-500 transform ${
+          isCartOpen ? "translate-x-0" : "translate-x-full"
+        }`}
       >
         <button
           onClick={toggleCart}
@@ -118,7 +126,10 @@ const CartPanel: React.FC = () => {
               >
                 Clear Cart
               </button>
-              <Link href={"/cart"} className="mt-4 text-xs font-medium sm:text-base px-2 py-2 sm:px-5  bg-gradient-to-br from-gray-600 to-black via-gray-700 text-white rounded w-fit">
+              <Link
+                href={"/cart"}
+                className="mt-4 text-xs font-medium sm:text-base px-2 py-2 sm:px-5  bg-gradient-to-br from-gray-600 to-black via-gray-700 text-white rounded w-fit"
+              >
                 Proceed To Checkout
               </Link>
             </div>
