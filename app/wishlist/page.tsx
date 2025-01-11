@@ -54,15 +54,15 @@ const Wishlist = () => {
               </div>
             </div>
 
-            <div className="mt-4 sm:mt-0 w-full sm:w-auto text-center">
+            <div className="mt-4 sm:mt-0 w-full sm:w-auto sm:text-center">
               <p className="font-medium text-lg">${item.price}</p>
             </div>
 
-            <div className="mt-4 sm:mt-0 w-full sm:w-auto text-center">
+            <div className="mt-4 sm:mt-0 w-full sm:w-auto sm:text-center">
               <p className="text-green-600 font-medium">In Stock</p>
             </div>
 
-            <div className="mt-4 sm:mt-0 w-full sm:w-auto flex flex-row items-center gap-4 justify-center">
+            <div className="mt-4 sm:mt-0 w-full sm:w-auto flex flex-row sm:items-center gap-4 sm:justify-center">
               <button
                 onClick={() => moveWishlistToCart(item.id)}
                 className="px-4 py-2 bg-gradient-to-br from-gray-600 via-gray-700 to-black text-white rounded text-sm hover:opacity-90"
