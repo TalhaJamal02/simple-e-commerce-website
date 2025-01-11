@@ -430,10 +430,10 @@ const Checkout = () => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <Link href={"/"}>
+            <Link href={"/"} className=" text-center">
               <AlertDialogCancel>Track Your Order</AlertDialogCancel>
             </Link>
-            <Link href={"/"}>
+            <Link href={"/"} className=" text-center">
               <AlertDialogAction>Continue Shopping</AlertDialogAction>
             </Link>
           </AlertDialogFooter>
