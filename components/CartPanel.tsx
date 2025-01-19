@@ -130,7 +130,7 @@ const CartPanel: React.FC = () => {
                 href={"/cart"}
                 className="mt-4 text-xs font-medium sm:text-base px-2 py-2 sm:px-5  bg-gradient-to-br from-gray-600 to-black via-gray-700 text-white rounded w-fit"
               >
-                Proceed To Checkout
+                View Cart
               </Link>
             </div>
           </>

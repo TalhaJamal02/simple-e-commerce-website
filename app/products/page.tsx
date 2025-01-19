@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useCart } from "@/lib/CartContext";
 import { Heart, Star } from "lucide-react";
 import { HashLoader } from "react-spinners";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -73,14 +74,18 @@ function Products() {
               key={product.id}
               className="hover:-translate-y-1 transform transition-all duration-500"
             >
-              <div
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
                 key={product.id}
-                className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-500 h-full flex flex-col items-start justify-center relative"
+                className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-500 h-full flex flex-col items-start justify-center relative"
               >
                 <button
-                  className="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors duration-300"
+                  className="absolute top-4 right-4 text-gray-500 hover:text-red-500 transition-colors duration-300"
                   onClick={(e) => {
-                    e.preventDefault(); 
+                    e.preventDefault();
                     toggleWishlist(product);
                   }}
                 >
@@ -105,13 +110,18 @@ function Products() {
                   <p className="text-lg font-bold text-gray-800 mb-1">
                     ${product.price}
                   </p>
-                  <span className="flex items-center gap-2 text-gray-600">
+                  <motion.span
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.3, delay: 0.2 }}
+                    className="flex items-center gap-2 text-gray-600"
+                  >
                     <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
                     <p>{product.rating.rate}</p>
                     <p className="text-gray-400">({product.rating.count})</p>
-                  </span>
+                  </motion.span>
                 </span>
-              </div>
+              </motion.div>
             </Link>
           ))}
         </div>

@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/lib/CartContext";
 
 export default function CartPage() {
@@ -27,7 +28,7 @@ export default function CartPage() {
   const totalPrice = subtotal + shippingCost + tax;
 
   return (
-    <div className="h-full mx-auto my-20 py-6 px-4 md:px-8 lg:px-16 bg-gray-50">
+    <div className="min-h-screen mx-auto my-20 py-6 px-4 md:px-8 lg:px-16 bg-gray-50">
       <h1 className="text-3xl font-bold mb-10 text-center text-gray-800">
         Shopping Cart
       </h1>
@@ -56,53 +57,71 @@ export default function CartPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {cart.map((item) => (
-                  <TableRow key={item.id} className="border-b">
-                    <TableCell className="p-4">
-                      <div className="flex sm:flex-row flex-col items-center gap-4">
-                        <Image
-                          src={item.image}
-                          alt={item.title}
-                          width={64}
-                          height={64}
-                          className="rounded"
-                        />
-                        <span className="text-gray-700">{item.title}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell className="p-4 text-gray-700">
-                      ${item.price.toFixed(2)}
-                    </TableCell>
-                    <TableCell className="p-4">
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="outline"
-                          className="p-2 border-none"
-                          onClick={() => decreaseQuantity(item.id)}
-                        >
-                          -
-                        </Button>
-                        <span className="text-gray-700">{item.quantity}</span>
-                        <Button
-                          variant="outline"
-                          className="p-2 border-none"
-                          onClick={() => increaseQuantity(item.id)}
-                        >
-                          +
-                        </Button>
-                      </div>
-                    </TableCell>
-                    <TableCell className="p-4 text-gray-700">
-                      ${(item.price * item.quantity).toFixed(2)}
-                    </TableCell>
-                  </TableRow>
-                ))}
+                <AnimatePresence>
+                  {cart.map((item) => (
+                    <motion.tr
+                      key={item.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.5, ease: "easeOut" }}
+                      className="border-b"
+                    >
+                      <TableCell className="p-4">
+                        <div className="flex sm:flex-row flex-col items-center gap-4">
+                          <Image
+                            src={item.image}
+                            alt={item.title}
+                            width={64}
+                            height={64}
+                            className="rounded"
+                          />
+                          <span className="text-gray-700">{item.title}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="p-4 text-gray-700">
+                        ${item.price.toFixed(2)}
+                      </TableCell>
+                      <TableCell className="p-4">
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="outline"
+                            className="p-2 border-none"
+                            onClick={() => decreaseQuantity(item.id)}
+                          >
+                            -
+                          </Button>
+                          <motion.span
+                            key={item.quantity}
+                            initial={{ scale: 0.8 }}
+                            animate={{ scale: 1 }}
+                            exit={{ scale: 0.8 }}
+                            transition={{ duration: 0.3 }}
+                            className="text-gray-700"
+                          >
+                            {item.quantity}
+                          </motion.span>
+                          <Button
+                            variant="outline"
+                            className="p-2 border-none"
+                            onClick={() => increaseQuantity(item.id)}
+                          >
+                            +
+                          </Button>
+                        </div>
+                      </TableCell>
+                      <TableCell className="p-4 text-gray-700">
+                        ${(item.price * item.quantity).toFixed(2)}
+                      </TableCell>
+                    </motion.tr>
+                  ))}
+                </AnimatePresence>
               </TableBody>
             </Table>
           )}
         </div>
 
-        <div className="bg-gray-100 p-6 rounded-lg shadow-lg h-auto">
+        <div className="bg-gray-100 p-6 rounded-lg shadow-lg">
           <h2 className="text-2xl font-semibold mb-6 text-gray-800">
             Cart Totals
           </h2>

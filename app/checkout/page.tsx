@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -88,273 +89,293 @@ const Checkout = () => {
                 <TabsTrigger value="card">Card Payment</TabsTrigger>
               </TabsList>
               <TabsContent value="cash">
-                <h2 className="text-xl font-semibold my-4 text-center">
-                  Billing Details
-                </h2>
-                <div className=" space-y-4">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium">
-                      Full Name
-                    </label>
-                    <Input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      placeholder="John Doe"
-                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium"
-                    >
-                      Email
-                    </label>
-                    <Input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="johndoe@example.com"
-                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="address"
-                      className="block text-sm font-medium"
-                    >
-                      Address
-                    </label>
-                    <Input
-                      type="text"
-                      id="address"
-                      name="address"
-                      value={formData.address}
-                      onChange={handleChange}
-                      placeholder="123 Main Street"
-                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                      required
-                    />
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <motion.div
+                  key="cash"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                >
+                  <h2 className="text-xl font-semibold my-4 text-center">
+                    Billing Details
+                  </h2>
+                  <div className=" space-y-4">
                     <div>
                       <label
-                        htmlFor="city"
+                        htmlFor="name"
                         className="block text-sm font-medium"
                       >
-                        City
+                        Full Name
                       </label>
                       <Input
                         type="text"
-                        id="city"
-                        name="city"
-                        value={formData.city}
+                        id="name"
+                        name="name"
+                        value={formData.name}
                         onChange={handleChange}
-                        placeholder="Karachi"
+                        placeholder="John Doe"
                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
                         required
                       />
                     </div>
                     <div>
                       <label
-                        htmlFor="zip"
+                        htmlFor="email"
                         className="block text-sm font-medium"
                       >
-                        ZIP Code
+                        Email
                       </label>
                       <Input
-                        type="number"
-                        id="zip"
-                        name="zip"
-                        inputMode="numeric"
-                        maxLength={5}
-                        value={formData.zip}
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
                         onChange={handleChange}
-                        placeholder="10005"
+                        placeholder="johndoe@example.com"
                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
                         required
                       />
                     </div>
+                    <div>
+                      <label
+                        htmlFor="address"
+                        className="block text-sm font-medium"
+                      >
+                        Address
+                      </label>
+                      <Input
+                        type="text"
+                        id="address"
+                        name="address"
+                        value={formData.address}
+                        onChange={handleChange}
+                        placeholder="123 Main Street"
+                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                        required
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label
+                          htmlFor="city"
+                          className="block text-sm font-medium"
+                        >
+                          City
+                        </label>
+                        <Input
+                          type="text"
+                          id="city"
+                          name="city"
+                          value={formData.city}
+                          onChange={handleChange}
+                          placeholder="Karachi"
+                          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="zip"
+                          className="block text-sm font-medium"
+                        >
+                          ZIP Code
+                        </label>
+                        <Input
+                          type="number"
+                          id="zip"
+                          name="zip"
+                          inputMode="numeric"
+                          maxLength={5}
+                          value={formData.zip}
+                          onChange={handleChange}
+                          placeholder="10005"
+                          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                          required
+                        />
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </motion.div>
               </TabsContent>
+
               <TabsContent value="card">
-                <h2 className="text-xl font-semibold my-4 text-center">
-                  Card Details
-                </h2>
-                <div className="space-y-4">
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium"
-                    >
-                      Email
-                    </label>
-                    <Input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="johndoe@example.com"
-                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="cardNumber"
-                      className="block text-sm font-medium"
-                    >
-                      Card Number
-                    </label>
-                    <Input
-                      type="text"
-                      id="cardNumber"
-                      name="cardNumber"
-                      inputMode="numeric"
-                      maxLength={19}
-                      value={formData.cardNumber}
-                      onChange={(e) => {
-                        const formattedCardNumber = e.target.value
-                          .replace(/\D/g, "")
-                          .replace(/(\d{4})(?=\d)/g, "$1 ");
-                        handleChange({
-                          target: {
-                            name: "cardNumber",
-                            value: formattedCardNumber,
-                          },
-                        });
-                      }}
-                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                      placeholder="1234 5678 9123 4567"
-                      required={formData.paymentMethod === "card"}
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="cardHolder"
-                      className="block text-sm font-medium"
-                    >
-                      Cardholder Name
-                    </label>
-                    <Input
-                      type="text"
-                      id="cardHolder"
-                      name="cardHolder"
-                      value={formData.cardHolder}
-                      onChange={handleChange}
-                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                      placeholder="John Doe"
-                      required={formData.paymentMethod === "card"}
-                    />
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <motion.div
+                  key="card"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                >
+                  <h2 className="text-xl font-semibold my-4 text-center">
+                    Card Details
+                  </h2>
+                  <div className="space-y-4">
                     <div>
                       <label
-                        htmlFor="expiry"
+                        htmlFor="email"
                         className="block text-sm font-medium"
                       >
-                        Expiration Date
+                        Email
                       </label>
                       <Input
-                        type="month"
-                        id="expiry"
-                        name="expiry"
-                        value={formData.expiry}
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
                         onChange={handleChange}
+                        placeholder="johndoe@example.com"
                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                        placeholder="MM/YY"
-                        required={formData.paymentMethod === "card"}
+                        required
                       />
                     </div>
                     <div>
                       <label
-                        htmlFor="cvv"
+                        htmlFor="cardNumber"
                         className="block text-sm font-medium"
                       >
-                        CVV
-                      </label>
-                      <Input
-                        type="password"
-                        inputMode="numeric"
-                        id="cvv"
-                        name="cvv"
-                        maxLength={3}
-                        value={formData.cvv}
-                        onChange={handleChange}
-                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                        placeholder="123"
-                        required={formData.paymentMethod === "card"}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="address"
-                      className="block text-sm font-medium"
-                    >
-                      Address
-                    </label>
-                    <Input
-                      type="text"
-                      id="address"
-                      name="address"
-                      value={formData.address}
-                      onChange={handleChange}
-                      placeholder="123 Main Street"
-                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                      required
-                    />
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label
-                        htmlFor="city"
-                        className="block text-sm font-medium"
-                      >
-                        City
+                        Card Number
                       </label>
                       <Input
                         type="text"
-                        id="city"
-                        name="city"
-                        value={formData.city}
-                        onChange={handleChange}
-                        placeholder="Karachi"
+                        id="cardNumber"
+                        name="cardNumber"
+                        inputMode="numeric"
+                        maxLength={19}
+                        value={formData.cardNumber}
+                        onChange={(e) => {
+                          const formattedCardNumber = e.target.value
+                            .replace(/\D/g, "")
+                            .replace(/(\d{4})(?=\d)/g, "$1 ");
+                          handleChange({
+                            target: {
+                              name: "cardNumber",
+                              value: formattedCardNumber,
+                            },
+                          });
+                        }}
                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                        required
+                        placeholder="1234 5678 9123 4567"
+                        required={formData.paymentMethod === "card"}
                       />
                     </div>
                     <div>
                       <label
-                        htmlFor="zip"
+                        htmlFor="cardHolder"
                         className="block text-sm font-medium"
                       >
-                        ZIP Code
+                        Cardholder Name
                       </label>
                       <Input
-                        type="tel"
-                        id="zip"
-                        name="zip"
-                        inputMode="numeric"
-                        maxLength={5}
-                        value={formData.zip}
+                        type="text"
+                        id="cardHolder"
+                        name="cardHolder"
+                        value={formData.cardHolder}
                         onChange={handleChange}
-                        placeholder="10005"
+                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                        placeholder="John Doe"
+                        required={formData.paymentMethod === "card"}
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label
+                          htmlFor="expiry"
+                          className="block text-sm font-medium"
+                        >
+                          Expiration Date
+                        </label>
+                        <Input
+                          type="month"
+                          id="expiry"
+                          name="expiry"
+                          value={formData.expiry}
+                          onChange={handleChange}
+                          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                          placeholder="MM/YY"
+                          required={formData.paymentMethod === "card"}
+                        />
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="cvv"
+                          className="block text-sm font-medium"
+                        >
+                          CVV
+                        </label>
+                        <Input
+                          type="password"
+                          inputMode="numeric"
+                          id="cvv"
+                          name="cvv"
+                          maxLength={3}
+                          value={formData.cvv}
+                          onChange={handleChange}
+                          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                          placeholder="123"
+                          required={formData.paymentMethod === "card"}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="address"
+                        className="block text-sm font-medium"
+                      >
+                        Address
+                      </label>
+                      <Input
+                        type="text"
+                        id="address"
+                        name="address"
+                        value={formData.address}
+                        onChange={handleChange}
+                        placeholder="123 Main Street"
                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
                         required
                       />
                     </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label
+                          htmlFor="city"
+                          className="block text-sm font-medium"
+                        >
+                          City
+                        </label>
+                        <Input
+                          type="text"
+                          id="city"
+                          name="city"
+                          value={formData.city}
+                          onChange={handleChange}
+                          placeholder="Karachi"
+                          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="zip"
+                          className="block text-sm font-medium"
+                        >
+                          ZIP Code
+                        </label>
+                        <Input
+                          type="tel"
+                          id="zip"
+                          name="zip"
+                          inputMode="numeric"
+                          maxLength={5}
+                          value={formData.zip}
+                          onChange={handleChange}
+                          placeholder="10005"
+                          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                          required
+                        />
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </motion.div>
               </TabsContent>
             </Tabs>
             <Button

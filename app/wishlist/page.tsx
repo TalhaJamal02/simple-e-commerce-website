@@ -5,6 +5,7 @@ import { Trash } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 
 const Wishlist = () => {
   const { wishlist, removeFromWishlist, moveWishlistToCart } = useCart();
@@ -27,9 +28,13 @@ const Wishlist = () => {
       <h1 className="text-3xl font-bold mb-6 text-center">My Wishlist</h1>
       <div className="space-y-6">
         {wishlist.map((item) => (
-          <div
+          <motion.div
             key={item.id}
             className="flex flex-col sm:flex-row items-center justify-between bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-500 p-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <div className="flex items-center gap-4 w-full sm:w-1/2">
               <Image
@@ -71,12 +76,12 @@ const Wishlist = () => {
               </button>
               <button
                 onClick={() => removeFromWishlist(item.id)}
-                className=" flex items-center text-red-500 hover:text-red-600 transition"
+                className="flex items-center text-red-500 hover:text-red-600 transition"
               >
                 <Trash className="h-5 w-5" />
               </button>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>
