@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.11.2",
     "@radix-ui/react-alert-dialog": "^1.1.4",
+    "@radix-ui/react-dropdown-menu": "^2.1.6",
     "@radix-ui/react-slot": "^1.1.1",
     "@radix-ui/react-tabs": "^1.1.2",
     "@radix-ui/react-toggle": "^1.1.1",
@@ -18,7 +20,8 @@
     "clsx": "^2.1.1",
     "framer-motion": "^11.18.1",
     "lucide-react": "^0.469.0",
-    "next": "14.2.18",
+    "motion": "^12.4.2",
+    "next": "^14.2.23",
     "next-themes": "^0.4.4",
     "react": "^18",
     "react-dom": "^18",

@@ -3,13 +3,19 @@
 import Link from "next/link";
 import React from "react";
 import CartPanel from "./CartPanel";
-import { Heart } from "lucide-react";
+import { Heart, User } from "lucide-react";
 import { useCart } from "@/lib/CartContext";
+import { SignInButton, UserButton, useAuth } from "@clerk/nextjs";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 function Navbar() {
-
   const { wishlist } = useCart();
-
+  const { isSignedIn } = useAuth();
 
   return (
     <div className="max-w-6xl m-auto w-[90%]">
@@ -26,6 +32,20 @@ function Navbar() {
             </span>
           </Link>
           <CartPanel />
+          {isSignedIn ? (
+            <UserButton showName={true} />
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <User size={28} className="cursor-pointer" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <SignInButton mode="modal">
+                  <DropdownMenuItem>Sign In</DropdownMenuItem>
+                </SignInButton>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
       </nav>
     </div>

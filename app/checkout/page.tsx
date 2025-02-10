@@ -53,7 +53,7 @@ const Checkout = () => {
     setIsDialogOpen(true);
   };
 
-  const { cart } = useCart();
+  const { cart, clearCart } = useCart();
 
   const shippingCost = 10;
   const tax = 2.99;
@@ -71,8 +71,8 @@ const Checkout = () => {
     } else {
       setDiscount(0);
       toast.error("Invalid coupon code!");
-    }
-  };
+    };
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 py-10">
@@ -80,7 +80,10 @@ const Checkout = () => {
         <h1 className="text-3xl text-center font-bold mb-8">Checkout</h1>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <form
-            onSubmit={handleSubmit}
+            onSubmit={(e) => {
+              handleSubmit(e);
+              clearCart();
+            }}
             className="space-y-4 w-full px-4 sm:px-8 lg:px-0"
           >
             <Tabs defaultValue="cash" className="w-full">

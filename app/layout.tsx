@@ -5,10 +5,10 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { CartProvider } from "@/lib/CartContext";
 import { Toaster } from "sonner";
-
+import { ClerkProvider } from "@clerk/nextjs";
 const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800"]
+  weight: ["300", "400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -22,17 +22,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${poppins.className}`}
-      >
-        <CartProvider>
-          <Navbar />
-          {children}
-          <Toaster />
-          <Footer />
-        </CartProvider>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={`${poppins.className}`}>
+          <CartProvider>
+            <Navbar />
+            {children}
+            <Toaster />
+            <Footer />
+          </CartProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
