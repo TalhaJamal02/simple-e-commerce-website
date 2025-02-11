@@ -1,6 +1,13 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+} from "react";
 
 type CartItem = {
   id: number;
@@ -38,7 +45,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   const [cart, setCart] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
 
-  // Load cart and wishlist from localStorage on component mount
   useEffect(() => {
     try {
       const storedCart = localStorage.getItem("cart");
@@ -50,17 +56,15 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, []);
 
-  // Save cart to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
-  // Save wishlist to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem("wishlist", JSON.stringify(wishlist));
   }, [wishlist]);
 
-  const addToCart = (item: CartItem) => {
+  const addToCart = useCallback((item: CartItem) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find((cartItem) => cartItem.id === item.id);
       if (existingItem) {
@@ -72,38 +76,41 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
       }
       return [...prevCart, { ...item, quantity: 1 }];
     });
-  };
+  }, []);
 
-  const addToWishlist = (item: WishlistItem) => {
+  const addToWishlist = useCallback((item: WishlistItem) => {
     setWishlist((prevWishlist) => {
       if (prevWishlist.some((wishlistItem) => wishlistItem.id === item.id)) {
         return prevWishlist;
       }
       return [...prevWishlist, item];
     });
-  };
+  }, []);
 
-  const removeFromWishlist = (id: number) => {
+  const removeFromWishlist = useCallback((id: number) => {
     setWishlist((prevWishlist) =>
       prevWishlist.filter((wishlistItem) => wishlistItem.id !== id)
     );
-  };
+  }, []);
 
-  const moveWishlistToCart = (id: number) => {
-    const item = wishlist.find((wishlistItem) => wishlistItem.id === id);
-    if (item) {
-      addToCart({
-        id: item.id,
-        title: item.title,
-        price: item.price,
-        image: item.image,
-        quantity: 1,
-      });
-      removeFromWishlist(id);
-    }
-  };
+  const moveWishlistToCart = useCallback(
+    (id: number) => {
+      const item = wishlist.find((wishlistItem) => wishlistItem.id === id);
+      if (item) {
+        addToCart({
+          id: item.id,
+          title: item.title,
+          price: item.price,
+          image: item.image,
+          quantity: 1,
+        });
+        removeFromWishlist(id);
+      }
+    },
+    [wishlist, addToCart, removeFromWishlist]
+  );
 
-  const increaseQuantity = (id: number) => {
+  const increaseQuantity = useCallback((id: number) => {
     setCart((prevCart) =>
       prevCart.map((cartItem) =>
         cartItem.id === id
@@ -111,9 +118,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
           : cartItem
       )
     );
-  };
+  }, []);
 
-  const decreaseQuantity = (id: number) => {
+  const decreaseQuantity = useCallback((id: number) => {
     setCart((prevCart) =>
       prevCart.map((cartItem) =>
         cartItem.id === id && cartItem.quantity > 1
@@ -121,18 +128,18 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
           : cartItem
       )
     );
-  };
+  }, []);
 
-  const removeFromCart = (id: number) => {
+  const removeFromCart = useCallback((id: number) => {
     setCart((prevCart) => prevCart.filter((cartItem) => cartItem.id !== id));
-  };
+  }, []);
 
-  const clearCart = () => {
+  const clearCart = useCallback(() => {
     setCart([]);
     localStorage.setItem("cart", JSON.stringify([]));
-  };
+  }, []);
 
-  const contextValue = React.useMemo(
+  const contextValue = useMemo(
     () => ({
       cart,
       wishlist,
@@ -145,7 +152,18 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
       removeFromCart,
       clearCart,
     }),
-    [cart, wishlist]
+    [
+      cart,
+      wishlist,
+      addToCart,
+      addToWishlist,
+      removeFromWishlist,
+      moveWishlistToCart,
+      increaseQuantity,
+      decreaseQuantity,
+      removeFromCart,
+      clearCart,
+    ]
   );
 
   return (
