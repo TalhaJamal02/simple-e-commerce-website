@@ -6,10 +6,13 @@ import Footer from "@/components/Footer";
 import { CartProvider } from "@/lib/CartContext";
 import { Toaster } from "sonner";
 import { ClerkProvider } from "@clerk/nextjs";
+
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
 });
+
+const clekPubkey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
 export const metadata: Metadata = {
   title: "ShopEasy - Talha",
@@ -22,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider publishableKey={clekPubkey}>
       <html lang="en">
         <body className={`${poppins.className}`}>
           <CartProvider>
