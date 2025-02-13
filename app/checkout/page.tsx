@@ -44,35 +44,39 @@ const Checkout = () => {
     }));
   };
 
-  const handleConfirmOrder = () => {
-    setIsDialogOpen(false);
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsDialogOpen(true);
   };
 
-  const { cart, clearCart } = useCart();
+  const { cart, clearCart, createOrder } = useCart();
 
   const shippingCost = 10;
   const tax = 2.99;
 
   const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
-  const discountedSubtotal = total - discount;
+  const totalPrice = total + shippingCost + tax - discount;
 
-  const totalPrice = discountedSubtotal + shippingCost + tax;
+  const handleCheckout = () => {
+    const customerDetails = {
+      name: formData.name,
+      email: formData.email,
+      address: `${formData.address}, ${formData.city}, ${formData.zip}`,
+    };
+
+    createOrder(customerDetails);
+    setIsDialogOpen(true);
+  };
 
   const applyCoupon = () => {
     if (couponCode === "DISCOUNT20") {
-      const discountAmount = total * 0.2;
-      setDiscount(discountAmount);
+      setDiscount(20);
+      toast.success("Coupon applied successfully!");
     } else {
-      setDiscount(0);
-      toast.error("Invalid coupon code!");
-    };
-  }
+      toast.error("Invalid coupon code");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 py-10">
@@ -383,7 +387,7 @@ const Checkout = () => {
             </Tabs>
             <Button
               type="submit"
-              onClick={handleConfirmOrder}
+              onClick={handleCheckout}
               className="w-full py-2 px-4 text-white font-medium rounded-md shadow-sm bg-gradient-to-r from-gray-500 via-black to-gray-500"
             >
               Place Order
@@ -454,10 +458,10 @@ const Checkout = () => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <Link href={"/"} className=" text-center">
+            <Link href={"/orders"} className="text-center">
               <AlertDialogCancel>Track Your Order</AlertDialogCancel>
             </Link>
-            <Link href={"/"} className=" text-center">
+            <Link href={"/"} className="text-center">
               <AlertDialogAction>Continue Shopping</AlertDialogAction>
             </Link>
           </AlertDialogFooter>

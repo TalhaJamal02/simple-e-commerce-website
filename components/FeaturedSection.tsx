@@ -80,12 +80,15 @@ function FeaturedSection() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-4">
-          {products.slice(13, 17).map((product) => (
-            <Link
-            href={`/products/${product.id}`}
-            key={product.id}
-            className="hover:-translate-y-1 transform transition-all duration-500"
-          >
+          {products
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 4)
+            .map((product) => (
+              <Link
+                href={`/products/${product.id}`}
+                key={product.id}
+                className="hover:-translate-y-1 transform transition-all duration-500"
+              >
             <div
               key={product.id}
               className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-500 h-full flex flex-col items-start justify-center relative"

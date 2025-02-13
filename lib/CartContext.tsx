@@ -8,6 +8,7 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
+import { toast } from "sonner";
 
 type CartItem = {
   id: number;
@@ -24,6 +25,21 @@ type WishlistItem = {
   image: string;
 };
 
+type OrderStatus = "pending" | "processing" | "shipped" | "delivered";
+
+type Order = {
+  orderId: string;
+  items: CartItem[];
+  status: OrderStatus;
+  totalAmount: number;
+  createdAt: string;
+  customerDetails?: {
+    name: string;
+    email: string;
+    address: string;
+  };
+};
+
 type CartContextType = {
   cart: CartItem[];
   wishlist: WishlistItem[];
@@ -35,6 +51,10 @@ type CartContextType = {
   decreaseQuantity: (id: number) => void;
   removeFromCart: (id: number) => void;
   clearCart: () => void;
+  orders: Order[];
+  createOrder: (customerDetails: Order["customerDetails"]) => void;
+  getOrder: (orderId: string) => Order | undefined;
+  getAllOrders: () => Order[];
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -44,6 +64,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
 
   useEffect(() => {
     try {
@@ -63,6 +84,19 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     localStorage.setItem("wishlist", JSON.stringify(wishlist));
   }, [wishlist]);
+
+  useEffect(() => {
+    try {
+      const storedOrders = localStorage.getItem("orders");
+      if (storedOrders) setOrders(JSON.parse(storedOrders));
+    } catch (error) {
+      console.error("Failed to parse orders from localStorage:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("orders", JSON.stringify(orders));
+  }, [orders]);
 
   const addToCart = useCallback((item: CartItem) => {
     setCart((prevCart) => {
@@ -130,6 +164,24 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     );
   }, []);
 
+  const applyCoupon = useCallback(
+    (couponCode: string) => {
+      if (couponCode === "DISCOUNT20") {
+        const discountAmount =
+          cart.reduce((sum, item) => sum + item.price * item.quantity, 0) * 0.2;
+        setCart((prevCart) =>
+          prevCart.map((item) => ({
+            ...item,
+            price: item.price * 0.8, // Apply 20% discount
+          }))
+        );
+      } else {
+        toast.error("Invalid coupon code!");
+      }
+    },
+    [cart]
+  );
+
   const removeFromCart = useCallback((id: number) => {
     setCart((prevCart) => prevCart.filter((cartItem) => cartItem.id !== id));
   }, []);
@@ -138,6 +190,39 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     setCart([]);
     localStorage.setItem("cart", JSON.stringify([]));
   }, []);
+
+  const createOrder = useCallback(
+    (customerDetails: Order["customerDetails"]) => {
+      const totalAmount = cart.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+      );
+
+      const newOrder: Order = {
+        orderId: `ORD-${Date.now()}`,
+        items: [...cart],
+        status: "pending",
+        totalAmount,
+        createdAt: new Date().toISOString(),
+        customerDetails,
+      };
+
+      setOrders((prev) => [...prev, newOrder]);
+      clearCart();
+    },
+    [cart, clearCart]
+  );
+
+  const getOrder = useCallback(
+    (orderId: string) => {
+      return orders.find((order) => order.orderId === orderId);
+    },
+    [orders]
+  );
+
+  const getAllOrders = useCallback(() => {
+    return orders;
+  }, [orders]);
 
   const contextValue = useMemo(
     () => ({
@@ -151,6 +236,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
       decreaseQuantity,
       removeFromCart,
       clearCart,
+      orders,
+      createOrder,
+      applyCoupon,
+      getOrder,
+      getAllOrders,
     }),
     [
       cart,
@@ -163,6 +253,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
       decreaseQuantity,
       removeFromCart,
       clearCart,
+      orders,
+      createOrder,
+      getOrder,
+      getAllOrders,
     ]
   );
 
