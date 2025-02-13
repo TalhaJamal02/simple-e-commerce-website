@@ -3,6 +3,7 @@
 import React from "react";
 import { useCart } from "@/lib/CartContext";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const OrdersPage = () => {
   const { getAllOrders } = useCart();
@@ -74,10 +75,12 @@ const OrdersPage = () => {
                         className="flex justify-between items-center"
                       >
                         <div className="flex items-center gap-2">
-                          <img
+                          <Image
                             src={item.image}
                             alt={item.title}
-                            className="w-24 h-24 object-contain rounded"
+                            width={96}
+                            height={96}
+                            className="w-auto h-auto object-contain rounded"
                           />
                           <div>
                             <p className="font-medium">{item.title}</p>

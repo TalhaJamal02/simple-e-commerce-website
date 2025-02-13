@@ -169,10 +169,12 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
       if (couponCode === "DISCOUNT20") {
         const discountAmount =
           cart.reduce((sum, item) => sum + item.price * item.quantity, 0) * 0.2;
+
+        toast.success(`You saved $${discountAmount.toFixed(2)}!`);
         setCart((prevCart) =>
           prevCart.map((item) => ({
             ...item,
-            price: item.price * 0.8, // Apply 20% discount
+            price: parseFloat((item.price * 0.8).toFixed(2)),
           }))
         );
       } else {
