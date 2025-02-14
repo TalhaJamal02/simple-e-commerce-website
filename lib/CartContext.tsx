@@ -263,6 +263,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       clearCart,
       orders,
       createOrder,
+      applyCoupon,
       getOrder,
       getAllOrders,
       updateOrderStatus,

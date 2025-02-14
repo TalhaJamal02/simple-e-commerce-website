@@ -2,7 +2,6 @@
 
 import React from "react";
 import { useCart } from "@/lib/CartContext";
-import { motion } from "framer-motion";
 import Image from "next/image";
 
 const OrdersPage = () => {
@@ -71,15 +70,17 @@ const OrdersPage = () => {
                 </div>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <div className="border-t pt-4">
                   <h3 className="font-medium mb-2">Items</h3>
                   {order.items.map((item) => (
                     <div key={item.id} className="flex items-center gap-4 mb-2">
-                      <img
+                      <Image
                         src={item.image}
                         alt={item.title}
-                        className="w-16 h-16 object-contain"
+                        width={64}
+                        height={64}
+                        className="w-auto h-auto object-contain"
                       />
                       <div className="flex-1">
                         <p className="font-medium">{item.title}</p>
