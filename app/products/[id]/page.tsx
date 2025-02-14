@@ -10,7 +10,6 @@ import { useCart } from "@/lib/CartContext";
 import { toast } from "sonner";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
-
 interface Product {
   id: number;
   title: string;
@@ -54,9 +53,11 @@ const ProductDetailPage: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-50 p-8 rounded-lg shadow-lg h-full items-center justify-center my-6">
+    <div className="bg-background p-8 rounded-lg shadow-lg h-full items-center justify-center my-16">
       <div className="text-center py-6">
-        <h1 className="text-4xl font-bold text-gray-900 uppercase">Product Detail</h1>
+        <h1 className="text-4xl font-bold text-foreground uppercase">
+          Product Detail
+        </h1>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center justify-center my-10">
@@ -66,40 +67,51 @@ const ProductDetailPage: React.FC = () => {
             width={300}
             height={300}
             alt={product.title}
-            className="rounded-lg"
+            className="rounded-lg bg-blend-color-burn"
           />
         </div>
 
         <div className="text-center md:text-left">
-          <p className="text-lg uppercase font-semibold text-gray-700 mb-2">
+          <p className="text-lg uppercase font-semibold text-muted-foreground mb-2">
             {product.category}
           </p>
-          <h2 className="text-3xl font-bold text-gray-800 my-3">{product.title}</h2>
+          <h2 className="text-3xl font-bold text-foreground my-3">
+            {product.title}
+          </h2>
 
-          <p className="text-lg font-semibold text-gray-700 mb-2">
-            Price: <span className="text-green-700">${product.price.toFixed(2)}</span>
+          <p className="text-lg font-semibold text-muted-foreground mb-2">
+            Price:{" "}
+            <span className="text-green-700">${product.price.toFixed(2)}</span>
           </p>
 
-          <p className="text-base text-gray-600 mb-2 flex justify-center sm:justify-normal items-center gap-2">
-            <span className="font-medium text-gray-700">Rating: </span>
+          <p className="text-base text-muted-foreground mb-2 flex justify-center sm:justify-normal items-center gap-2">
+            <span className="font-medium text-muted-foreground">Rating: </span>
             <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
             {product.rating.rate}
           </p>
 
-          <p className="flex text-gray-700 font-medium items-center gap-2 justify-center sm:justify-normal mb-2">
-            Size: <ToggleGroup type="single">
-              <ToggleGroupItem value="s" className=" border border-gray-300">S</ToggleGroupItem>
-              <ToggleGroupItem value="m" className=" border border-gray-300">M</ToggleGroupItem>
-              <ToggleGroupItem value="l" className=" border border-gray-300">L</ToggleGroupItem>
+          <p className="flex text-muted-foreground font-medium items-center gap-2 justify-center sm:justify-normal mb-2">
+            Size:{" "}
+            <ToggleGroup type="single">
+              <ToggleGroupItem value="s" className=" border border-gray-300">
+                S
+              </ToggleGroupItem>
+              <ToggleGroupItem value="m" className=" border border-gray-300">
+                M
+              </ToggleGroupItem>
+              <ToggleGroupItem value="l" className=" border border-gray-300">
+                L
+              </ToggleGroupItem>
             </ToggleGroup>
           </p>
 
-          <p className="text-base text-gray-600 mb-6">
-            <span className="font-medium text-gray-700">Description: </span>{product.description}
+          <p className="text-base text-muted-foreground mb-6">
+            <span className="font-medium text-muted-foreground">Description: </span>
+            {product.description}
           </p>
 
           <button
-            className="w-full md:w-auto px-6 py-3 bg-gradient-to-br from-gray-600 via-gray-700 to-black text-white text-sm font-bold uppercase rounded-md hover:-translate-y-1 transition-all duration-300"
+            className="w-full md:w-auto px-6 py-3 bg-gradient-to-br from-muted-foreground via-muted-foreground to-muted-foreground text-white text-sm font-bold uppercase rounded-md hover:-translate-y-1 transition-all duration-300"
             onClick={handleAddToCart}
           >
             Add to Cart
@@ -107,7 +119,7 @@ const ProductDetailPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="mt-24">
+        <div className="mt-24">
         <FeaturedSection />
       </div>
     </div>

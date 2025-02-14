@@ -45,17 +45,18 @@ function FeaturedSection() {
         title: products.title,
         price: products.price,
         image: products.image,
+        quantity: 1,
       });
     }
   };
 
   return (
-    <div className="py-12 bg-gray-100">
+    <div className="py-12 bg-background">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-800 mb-2">
+        <h2 className="text-3xl font-bold text-foreground mb-2">
           Featured Products
         </h2>
-        <p className="text-lg text-gray-500">
+        <p className="text-lg text-muted-foreground">
           Check out our best-selling products
         </p>
       </div>
@@ -64,7 +65,7 @@ function FeaturedSection() {
           {[...Array(4)].map((_, index) => (
             <div
               key={index}
-              className="bg-white p-6 rounded-lg shadow-md h-full flex flex-col items-start justify-center"
+              className="bg-card p-6 rounded-lg shadow-md h-full flex flex-col items-start justify-center"
             >
               <Skeleton className="h-48 w-full mb-6" />
               <div className="space-y-2 w-full">
@@ -89,47 +90,49 @@ function FeaturedSection() {
                 key={product.id}
                 className="hover:-translate-y-1 transform transition-all duration-500"
               >
-            <div
-              key={product.id}
-              className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-500 h-full flex flex-col items-start justify-center relative"
-            >
-              <button
-                className="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors duration-300"
-                onClick={(e) => {
-                  e.preventDefault(); 
-                  toggleWishlist(product);
-                }}
-              >
-                {isInWishlist(product.id) ? (
-                  <Heart className="h-6 w-6 fill-red-500 text-red-500" />
-                ) : (
-                  <Heart className="h-6 w-6" />
-                )}
-              </button>
-              <Image
-                src={product.image}
-                alt={product.title}
-                width={500}
-                height={500}
-                className="w-full h-48 object-contain mb-6"
-              />
-              <h2 className="text-lg font-semibold my-2">{product.title}</h2>
-              <p className="text-gray-600 mb-1">
-                {product.description.slice(0, 50)}...
-              </p>
-              <span className="flex items-center justify-between w-full">
-                <p className="text-lg font-bold text-gray-800 mb-1">
-                  ${product.price}
-                </p>
-                <span className="flex items-center gap-2 text-gray-600">
-                  <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                  <p>{product.rating.rate}</p>
-                  <p className="text-gray-400">({product.rating.count})</p>
-                </span>
-              </span>
-            </div>
-          </Link>
-          ))}
+                <div
+                  key={product.id}
+                  className="bg-card p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-500 h-full flex flex-col items-start justify-center relative"
+                >
+                  <button
+                    className="absolute top-4 right-4 text-muted-foreground hover:text-red-500 transition-colors duration-300"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleWishlist(product);
+                    }}
+                  >
+                    {isInWishlist(product.id) ? (
+                      <Heart className="h-6 w-6 fill-red-500 text-red-500" />
+                    ) : (
+                      <Heart className="h-6 w-6" />
+                    )}
+                  </button>
+                  <Image
+                    src={product.image}
+                    alt={product.title}
+                    width={500}
+                    height={500}
+                    className="w-full h-48 object-contain mb-6 bg-blend-color-burn"
+                  />
+                  <h2 className="text-lg font-semibold my-2">
+                    {product.title}
+                  </h2>
+                  <p className="text-muted-foreground mb-1">
+                    {product.description.slice(0, 50)}...
+                  </p>
+                  <span className="flex items-center justify-between w-full">
+                    <p className="text-lg font-bold text-foreground mb-1">
+                      ${product.price}
+                    </p>
+                    <span className="flex items-center gap-2 text-muted-foreground">
+                      <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                      <p>{product.rating.rate}</p>
+                      <p className="text-muted-foreground">({product.rating.count})</p>
+                    </span>
+                  </span>
+                </div>
+              </Link>
+            ))}
         </div>
       )}
     </div>

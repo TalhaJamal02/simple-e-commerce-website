@@ -12,10 +12,10 @@ const Wishlist = () => {
 
   if (wishlist.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen bg-gray-100 text-black">
+      <div className="flex flex-col items-center justify-center h-screen bg-background text-foreground">
         <h1 className="text-2xl font-bold mb-4">Your Wishlist is Empty</h1>
         <Link href="/products">
-          <Button className="bg-gradient-to-r from-gray-600 to-black via-gray-700 text-white px-6 py-2 rounded">
+          <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
             Browse Products
           </Button>
         </Link>
@@ -24,13 +24,13 @@ const Wishlist = () => {
   }
 
   return (
-    <div className="mx-auto px-4 py-8 bg-gray-100 text-black min-h-screen max-w-screen-lg">
+    <div className="mx-auto px-4 py-8 my-16 bg-background text-foreground min-h-screen max-w-screen-lg">
       <h1 className="text-3xl font-bold mb-6 text-center">My Wishlist</h1>
       <div className="space-y-6">
         {wishlist.map((item) => (
           <motion.div
             key={item.id}
-            className="flex flex-col sm:flex-row items-center justify-between bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-500 p-4"
+            className="flex flex-col sm:flex-row items-center justify-between bg-card rounded-lg shadow-md hover:shadow-lg transition-all duration-500 p-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -45,14 +45,14 @@ const Wishlist = () => {
                 className="w-16 h-16 object-contain rounded sm:w-24 sm:h-24"
               />
               <div>
-                <p className="font-medium text-lg">
+                <p className="font-medium text-lg text-foreground">
                   {item.title.length > 25
                     ? `${item.title.slice(0, 25)}...`
                     : item.title}
                 </p>
                 <Link
                   href={`/products/${item.id}`}
-                  className="text-sm text-gray-500 hover:underline"
+                  className="text-sm text-muted-foreground hover:underline"
                 >
                   View Details
                 </Link>

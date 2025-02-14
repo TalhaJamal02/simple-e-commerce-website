@@ -34,6 +34,7 @@ function Products() {
         title: products.title,
         price: products.price,
         image: products.image,
+        quantity: 1,
       });
     }
   };
@@ -53,18 +54,18 @@ function Products() {
   }, []);
 
   return (
-    <div className=" h-full py-16 px-4 bg-gray-100">
+    <div className="h-full py-16 px-4 bg-background">
       <div className="my-10">
-        <h1 className="text-4xl font-extrabold text-center mb-2 text-gray-900">
+        <h1 className="text-4xl font-extrabold text-center mb-2 text-foreground">
           Our Exclusive Products
         </h1>
-        <p className="text-lg text-center text-gray-600 mb-8">
+        <p className="text-lg text-center text-muted-foreground mb-8">
           Discover the best products curated just for you
         </p>
       </div>
       {loading ? (
         <div className="flex justify-center items-center min-h-[50vh]">
-          <HashLoader color="#1F2937" loading={loading} size={60} />
+          <HashLoader color="currentColor" loading={loading} size={60} />
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -80,7 +81,7 @@ function Products() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
                 key={product.id}
-                className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-500 h-full flex flex-col items-start justify-center relative"
+                className="bg-card p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-500 h-full flex flex-col items-start justify-center relative"
               >
                 <button
                   className="absolute top-4 right-4 text-gray-500 hover:text-red-500 transition-colors duration-300"
@@ -102,12 +103,12 @@ function Products() {
                   height={500}
                   className="w-full h-48 object-contain mb-6"
                 />
-                <h2 className="text-lg font-semibold my-2">{product.title}</h2>
-                <p className="text-gray-600 mb-1">
+                <h2 className="text-lg font-semibold my-2 text-foreground">{product.title}</h2>
+                <p className="text-muted-foreground mb-1">
                   {product.description.slice(0, 50)}...
                 </p>
                 <span className="flex items-center justify-between w-full">
-                  <p className="text-lg font-bold text-gray-800 mb-1">
+                  <p className="text-lg font-bold text-foreground mb-1">
                     ${product.price}
                   </p>
                   <motion.span

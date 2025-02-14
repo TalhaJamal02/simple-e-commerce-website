@@ -10,157 +10,151 @@ import React, {
 } from "react";
 import { toast } from "sonner";
 
-type CartItem = {
+interface CartItem {
   id: number;
   title: string;
   price: number;
+  image: string;
   quantity: number;
-  image: string;
-};
+}
 
-type WishlistItem = {
-  id: number;
-  title: string;
-  price: number;
-  image: string;
-};
+interface CustomerDetails {
+  name: string;
+  email: string;
+  address: string;
+}
 
-type OrderStatus = "pending" | "processing" | "shipped" | "delivered";
-
-type Order = {
+interface Order {
   orderId: string;
   items: CartItem[];
-  status: OrderStatus;
   totalAmount: number;
+  status: "pending" | "processing" | "shipped" | "delivered";
   createdAt: string;
-  customerDetails?: {
-    name: string;
-    email: string;
-    address: string;
-  };
-};
+  customerDetails: CustomerDetails;
+}
 
-type CartContextType = {
+interface CartContextType {
   cart: CartItem[];
-  wishlist: WishlistItem[];
-  addToCart: (item: CartItem) => void;
-  addToWishlist: (item: WishlistItem) => void;
-  removeFromWishlist: (id: number) => void;
-  moveWishlistToCart: (id: number) => void;
-  increaseQuantity: (id: number) => void;
-  decreaseQuantity: (id: number) => void;
-  removeFromCart: (id: number) => void;
+  wishlist: CartItem[];
+  addToCart: (product: CartItem) => void;
+  increaseQuantity: (productId: number) => void;
+  decreaseQuantity: (productId: number) => void;
   clearCart: () => void;
-  orders: Order[];
-  createOrder: (customerDetails: Order["customerDetails"]) => void;
-  getOrder: (orderId: string) => Order | undefined;
+  addToWishlist: (product: CartItem) => void;
+  removeFromWishlist: (productId: number) => void;
+  moveWishlistToCart: (productId: number) => void;
+  createOrder: (customerDetails: CustomerDetails) => void;
   getAllOrders: () => Order[];
-};
+  updateOrderStatus: (orderId: string, newStatus: Order["status"]) => void;
+  removeFromCart: (productId: number) => void;
+}
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
-  const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
+  const [wishlist, setWishlist] = useState<CartItem[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [isInitialized, setIsInitialized] = useState(false);
 
+  // Load data from localStorage after component mounts
   useEffect(() => {
-    try {
-      const storedCart = localStorage.getItem("cart");
-      const storedWishlist = localStorage.getItem("wishlist");
-      if (storedCart) setCart(JSON.parse(storedCart));
-      if (storedWishlist) setWishlist(JSON.parse(storedWishlist));
-    } catch (error) {
-      console.error("Failed to parse localStorage data:", error);
+    const savedOrders = localStorage.getItem("orders");
+    if (savedOrders) {
+      setOrders(JSON.parse(savedOrders));
     }
+
+    const savedCart = localStorage.getItem("cart");
+    if (savedCart) {
+      setCart(JSON.parse(savedCart));
+    }
+
+    const savedWishlist = localStorage.getItem("wishlist");
+    if (savedWishlist) {
+      setWishlist(JSON.parse(savedWishlist));
+    }
+
+    setIsInitialized(true);
   }, []);
 
+  // Save orders to localStorage whenever they change
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
-
-  useEffect(() => {
-    localStorage.setItem("wishlist", JSON.stringify(wishlist));
-  }, [wishlist]);
-
-  useEffect(() => {
-    try {
-      const storedOrders = localStorage.getItem("orders");
-      if (storedOrders) setOrders(JSON.parse(storedOrders));
-    } catch (error) {
-      console.error("Failed to parse orders from localStorage:", error);
+    if (isInitialized) {
+      localStorage.setItem("orders", JSON.stringify(orders));
     }
-  }, []);
+  }, [orders, isInitialized]);
 
+  // Save cart to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem("orders", JSON.stringify(orders));
-  }, [orders]);
+    if (isInitialized) {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+  }, [cart, isInitialized]);
 
-  const addToCart = useCallback((item: CartItem) => {
+  // Save wishlist to localStorage whenever it changes
+  useEffect(() => {
+    if (isInitialized) {
+      localStorage.setItem("wishlist", JSON.stringify(wishlist));
+    }
+  }, [wishlist, isInitialized]);
+
+  const addToCart = useCallback((product: CartItem) => {
     setCart((prevCart) => {
-      const existingItem = prevCart.find((cartItem) => cartItem.id === item.id);
+      const existingItem = prevCart.find((item) => item.id === product.id);
       if (existingItem) {
-        return prevCart.map((cartItem) =>
-          cartItem.id === item.id
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem
+        return prevCart.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
         );
       }
-      return [...prevCart, { ...item, quantity: 1 }];
+      return [...prevCart, { ...product, quantity: 1 }];
     });
   }, []);
 
-  const addToWishlist = useCallback((item: WishlistItem) => {
+  const addToWishlist = useCallback((product: CartItem) => {
     setWishlist((prevWishlist) => {
-      if (prevWishlist.some((wishlistItem) => wishlistItem.id === item.id)) {
-        return prevWishlist;
+      if (!prevWishlist.some((item) => item.id === product.id)) {
+        return [...prevWishlist, { ...product, quantity: 1 }];
       }
-      return [...prevWishlist, item];
+      return prevWishlist;
     });
   }, []);
 
-  const removeFromWishlist = useCallback((id: number) => {
+  const removeFromWishlist = useCallback((productId: number) => {
     setWishlist((prevWishlist) =>
-      prevWishlist.filter((wishlistItem) => wishlistItem.id !== id)
+      prevWishlist.filter((item) => item.id !== productId)
     );
   }, []);
 
   const moveWishlistToCart = useCallback(
-    (id: number) => {
-      const item = wishlist.find((wishlistItem) => wishlistItem.id === id);
+    (productId: number) => {
+      const item = wishlist.find((item) => item.id === productId);
       if (item) {
-        addToCart({
-          id: item.id,
-          title: item.title,
-          price: item.price,
-          image: item.image,
-          quantity: 1,
-        });
-        removeFromWishlist(id);
+        addToCart(item);
+        removeFromWishlist(productId);
       }
     },
     [wishlist, addToCart, removeFromWishlist]
   );
 
-  const increaseQuantity = useCallback((id: number) => {
+  const increaseQuantity = useCallback((productId: number) => {
     setCart((prevCart) =>
-      prevCart.map((cartItem) =>
-        cartItem.id === id
-          ? { ...cartItem, quantity: cartItem.quantity + 1 }
-          : cartItem
+      prevCart.map((item) =>
+        item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
       )
     );
   }, []);
 
-  const decreaseQuantity = useCallback((id: number) => {
+  const decreaseQuantity = useCallback((productId: number) => {
     setCart((prevCart) =>
-      prevCart.map((cartItem) =>
-        cartItem.id === id && cartItem.quantity > 1
-          ? { ...cartItem, quantity: cartItem.quantity - 1 }
-          : cartItem
-      )
+      prevCart
+        .map((item) =>
+          item.id === productId && item.quantity > 1
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
+        )
+        .filter((item) => item.quantity > 0)
     );
   }, []);
 
@@ -184,8 +178,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     [cart]
   );
 
-  const removeFromCart = useCallback((id: number) => {
-    setCart((prevCart) => prevCart.filter((cartItem) => cartItem.id !== id));
+  const removeFromCart = useCallback((productId: number) => {
+    setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
   }, []);
 
   const clearCart = useCallback(() => {
@@ -194,25 +188,25 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const createOrder = useCallback(
-    (customerDetails: Order["customerDetails"]) => {
-      const totalAmount = cart.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0
-      );
+    (customerDetails: CustomerDetails) => {
+      if (cart.length === 0) return;
 
       const newOrder: Order = {
-        orderId: `ORD-${Date.now()}`,
+        orderId: Math.random().toString(36).substr(2, 9),
         items: [...cart],
+        totalAmount: cart.reduce(
+          (acc, item) => acc + item.price * item.quantity,
+          0
+        ),
         status: "pending",
-        totalAmount,
         createdAt: new Date().toISOString(),
         customerDetails,
       };
 
-      setOrders((prev) => [...prev, newOrder]);
-      clearCart();
+      setOrders((prevOrders) => [...prevOrders, newOrder]);
+      setCart([]); // Clear cart after order creation
     },
-    [cart, clearCart]
+    [cart]
   );
 
   const getOrder = useCallback(
@@ -225,6 +219,17 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   const getAllOrders = useCallback(() => {
     return orders;
   }, [orders]);
+
+  const updateOrderStatus = useCallback(
+    (orderId: string, newStatus: Order["status"]) => {
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.orderId === orderId ? { ...order, status: newStatus } : order
+        )
+      );
+    },
+    []
+  );
 
   const contextValue = useMemo(
     () => ({
@@ -243,6 +248,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
       applyCoupon,
       getOrder,
       getAllOrders,
+      updateOrderStatus,
     }),
     [
       cart,
@@ -259,13 +265,19 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
       createOrder,
       getOrder,
       getAllOrders,
+      updateOrderStatus,
     ]
   );
+
+  // Optional: You can wrap the provider's children with a loading state
+  if (!isInitialized) {
+    return null; // Or return a loading spinner
+  }
 
   return (
     <CartContext.Provider value={contextValue}>{children}</CartContext.Provider>
   );
-};
+}
 
 export const useCart = (): CartContextType => {
   const context = useContext(CartContext);

@@ -15,7 +15,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/lib/CartContext";
 
 export default function CartPage() {
-  const { cart, increaseQuantity, decreaseQuantity } = useCart();
+  const { cart, increaseQuantity, decreaseQuantity, removeFromCart } =
+    useCart();
 
   const subtotal = cart.reduce(
     (acc, item) => acc + item.price * item.quantity,
@@ -28,23 +29,26 @@ export default function CartPage() {
   const totalPrice = subtotal + shippingCost + tax;
 
   return (
-    <div className="min-h-screen mx-auto my-20 py-6 px-4 md:px-8 lg:px-16 bg-gray-50">
-      <h1 className="text-3xl font-bold mb-10 text-center text-gray-800">
+    <div className="min-h-screen mx-auto my-20 py-6 px-4 md:px-8 lg:px-16 bg-background">
+      <h1 className="text-3xl font-bold mb-10 text-center text-foreground">
         Shopping Cart
       </h1>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2">
           {cart.length === 0 ? (
-            <div className="text-center text-gray-600 py-10">
+            <div className="text-center text-muted-foreground py-10">
               <p>Your cart is empty.</p>
-              <Link href="/" className="text-blue-500 hover:underline">
+              <Link
+                href="/"
+                className="text-blue-500 dark:text-blue-400 hover:underline"
+              >
                 Continue Shopping
               </Link>
             </div>
           ) : (
-            <Table className="w-full bg-white shadow-lg rounded-lg overflow-hidden">
-              <TableHeader className="bg-gray-200">
+            <Table className="w-full bg-card shadow-lg rounded-lg overflow-hidden">
+              <TableHeader className="bg-muted">
                 <TableRow>
                   <TableHead className="w-2/5 p-4 text-left">Product</TableHead>
                   <TableHead className="w-1/5 p-4 text-left">Price</TableHead>
@@ -76,7 +80,17 @@ export default function CartPage() {
                             height={64}
                             className="rounded"
                           />
-                          <span className="text-gray-700">{item.title}</span>
+                          <div className="flex flex-col gap-2 flex-grow">
+                            <span className="text-gray-700 sm:text-base text-sm">
+                              {item.title}
+                            </span>
+                            <button
+                              onClick={() => removeFromCart(item.id)}
+                              className="flex items-center gap-1 text-red-500 text-sm hover:text-red-700 transition-colors duration-200 w-fit"
+                            >
+                              Remove
+                            </button>
+                          </div>
                         </div>
                       </TableCell>
                       <TableCell className="p-4 text-gray-700">
@@ -121,33 +135,33 @@ export default function CartPage() {
           )}
         </div>
 
-        <div className="bg-gray-100 p-6 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-semibold mb-6 text-gray-800">
+        <div className="bg-card p-6 rounded-lg shadow-lg">
+          <h2 className="text-2xl font-semibold mb-6 text-foreground">
             Cart Totals
           </h2>
 
-          <div className="flex justify-between mb-3 text-gray-700">
+          <div className="flex justify-between mb-3 text-muted-foreground">
             <span>Subtotal:</span>
             <span>${subtotal.toFixed(2)}</span>
           </div>
 
-          <div className="flex justify-between mb-3 text-gray-700">
+          <div className="flex justify-between mb-3 text-muted-foreground">
             <span>Tax:</span>
             <span>${tax}</span>
           </div>
 
-          <div className="flex justify-between mb-3 text-gray-700">
+          <div className="flex justify-between mb-3 text-muted-foreground">
             <span>Shipping:</span>
             <span>${shippingCost}</span>
           </div>
-          <hr className="my-4" />
-          <div className="flex justify-between text-lg text-gray-800">
+          <hr className="my-4 border-border" />
+          <div className="flex justify-between text-lg text-foreground">
             <span>Total:</span>
             <span>${totalPrice.toFixed(2)}</span>
           </div>
 
           <Link href="/checkout">
-            <Button className="w-full font-semibold mt-6 bg-gradient-to-br from-gray-500 via-black to-gray-500">
+            <Button className="w-full font-semibold mt-6 bg-primary text-primary-foreground hover:bg-primary/90">
               Proceed to Checkout
             </Button>
           </Link>

@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { CartProvider } from "@/lib/CartContext";
 import { Toaster } from "sonner";
 import { ClerkProvider } from "@clerk/nextjs";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -26,14 +27,21 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider publishableKey={clekPubkey}>
-      <html lang="en">
-        <body className={`${poppins.className}`}>
-          <CartProvider>
-            <Navbar />
-            {children}
-            <Toaster />
-            <Footer />
-          </CartProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body className={`${poppins.className}`} suppressHydrationWarning>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <CartProvider>
+              <Navbar />
+              {children}
+              <Toaster />
+              <Footer />
+            </CartProvider>
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>
