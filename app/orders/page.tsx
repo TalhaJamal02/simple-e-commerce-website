@@ -8,21 +8,6 @@ const OrdersPage = () => {
   const { getAllOrders } = useCart();
   const orders = getAllOrders();
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "pending":
-        return "bg-yellow-500";
-      case "processing":
-        return "bg-blue-500";
-      case "shipped":
-        return "bg-purple-500";
-      case "delivered":
-        return "bg-green-500";
-      default:
-        return "bg-gray-500";
-    }
-  };
-
   return (
     <div className="container min-h-screen mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold mb-6">Your Orders</h1>
